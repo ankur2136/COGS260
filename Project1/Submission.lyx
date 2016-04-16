@@ -1,0 +1,3856 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass IEEEtran
+\begin_preamble
+
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "basicstyle={\ttfamily\small}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+COGS 260: Assignment 1
+\end_layout
+
+\begin_layout Author
+Ankur Jain, A53097130, anj022@ucsd.edu
+\end_layout
+
+\begin_layout Abstract
+Edge detection has been fundamental tool in image processing and computer
+ vision.
+ The purpose of detecting sharp changes in image brightness is to capture
+ important events and changes in properties of the world.
+ In this paper, we present a comparative study between a variety of available
+ edge detection methods.
+ This paper also touches on comparison of pre-existing image smoothing and
+ noise removal methods and effect of filter size.
+\end_layout
+
+\begin_layout Keywords
+De-noising, Edge Detection, Histogram Equalization, Gaussian Filter, Image
+ Processing
+\end_layout
+
+\begin_layout Section
+Basic Image Operation
+\end_layout
+
+\begin_layout Subsection
+Image Read/write
+\end_layout
+
+\begin_layout Standard
+We used the inbuilt read function in MATLAB to read the image 12084.jpg,
+ and the inbuilt function was used to convert the image from RGB to grayscale.
+ The results are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_1"
+
+\end_inset
+
+.
+ Corresponding code can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "ans1a"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1a1.jpg
+	lyxscale 50
+	scale 50
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1a1_gray.jpg
+	lyxscale 50
+	scale 50
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_1"
+
+\end_inset
+
+(a) Original Image (b) Corresponding grayscale image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Image Smoothing
+\end_layout
+
+\begin_layout Standard
+Image smoothing is useful technique for removing noise.
+ It actually removes high frequency content (e.g: noise, edges) from the
+ image resulting in edges being blurred when this is filter is applied.
+ In this paper we study gaussian and average smoothing.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Gaussian Smoothing
+\end_layout
+
+\begin_layout Standard
+The Gaussian blur is a type of image-blurring filter that uses a Gaussian
+ function (which also expresses the normal distribution in statistics) for
+ calculating the transformation to apply to each pixel in the image.
+ The equation of a Gaussian function in two dimension is describe by eq
+ 1.
+ 
+\begin_inset Formula 
+\begin{equation}
+G(x,y)=\frac{1}{2\pi\sigma^{2}}e^{-\frac{x^{2}+y^{2}}{2\sigma^{2}}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where x is the distance from the origin in the horizontal axis, y is the
+ distance from the origin in the vertical axis, and 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ is the standard deviation of the Gaussian distribution.
+ When applied in two dimensions, this formula produces a surface whose contours
+ are concentric circles with a Gaussian distribution from the center point.
+ Values from this distribution are used to build a convolution matrix which
+ is applied to the original image.
+ Each pixel's new value is set to a weighted average of that pixel's neighborhoo
+d.
+ The original pixel's value receives the heaviest weight (having the highest
+ Gaussian value) and neighboring pixels receive smaller weights as their
+ distance to the original pixel increases.
+ This results in a blur that preserves boundaries and edges better than
+ other, more uniform blurring filters.
+ 
+\end_layout
+
+\begin_layout Standard
+We conducted experiments where kernel width was varied from 3 to 7.
+ The results are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_2a1"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_2a2"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_2a3"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Average Smoothing
+\end_layout
+
+\begin_layout Standard
+This method replaces each pixel with a weighted average of neighborhood.
+ In our case we have assumed all weights to be equal.
+ We conducted experiments where kernel width was varied from 3 to 7.
+ The results are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_2b1"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_2b2"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_2b3"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+The results for gaussian smoothing and average smoothing are placed side-by-side
+ for direct visual comparison and it shows that the degree of smoothing
+ increases with the size of the kernel due to higher area of averaging of
+ a pixel with its neighboring pixels.
+ The results of gaussian smoothing are more realistic and approximate more
+ closely the real-world effect of shooting a subject with an out-of-focus
+ lens, whereas average smoothing gives a poor smoothing result for a smaller
+ window size.
+ If we repeat average smoothing 3-4 times, the results seems to be comparable
+ to gaussian smoothing.
+ (The results for later experiments are not shown in this paper).
+ Code can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans1b"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename data/img/12084.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b1_1_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b1_2_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b1_3_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_2a1"
+
+\end_inset
+
+Smoothing (a) Original Image (b) Gaussian smoothed image(Filter Size=3)
+ (c) Gaussian smoothed image(Filter Size=5) (d) Gaussian smoothed image(Filter
+ Size=7) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename data/img/12084.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b1_1_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b1_2_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b1_3_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_2b1"
+
+\end_inset
+
+Smoothing (a) Original Image (b) Average smoothed image(Filter Size=3) (c)
+ Average smoothed image(Filter Size=5) (d) Average smoothed image(Filter
+ Size=7) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename data/img/3096.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b2_1_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b2_2_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b2_3_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_2a2"
+
+\end_inset
+
+Smoothing (a) Original Image (b) Gaussian smoothed image(Filter Size=3)
+ (c) Gaussian smoothed image(Filter Size=5) (d) Gaussian smoothed image(Filter
+ Size=7) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename data/img/3096.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b2_1_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b2_2_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b2_3_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_2b2"
+
+\end_inset
+
+Smoothing (a) Original Image (b) Average smoothed image(Filter Size=3) (c)
+ Average smoothed image(Filter Size=5) (d) Average smoothed image(Filter
+ Size=7) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename data/img/14037.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b3_1_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b3_2_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b3_3_gaussion.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_2a3"
+
+\end_inset
+
+Smoothing (a) Original Image (b) Gaussian smoothed image(Filter Size=3)
+ (c) Gaussian smoothed image(Filter Size=5) (d) Gaussian smoothed image(Filter
+ Size=7) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename data/img/14037.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b3_1_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b3_2_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Results/ans1b3_3_average.jpg
+	lyxscale 50
+	scale 45
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_2b3"
+
+\end_inset
+
+Smoothing (a) Original Image (b) Average smoothed image(Filter Size=3) (c)
+ Average smoothed image(Filter Size=5) (d) Average smoothed image(Filter
+ Size=7) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement !tp
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/snp/1.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans1c_image1_median_filterSize3x3.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(f)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/snp/2.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans1c_image2_median_filterSize3x3.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(g)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/snp/3.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans1c_image3_median_filterSize3x3.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(h)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/snp/4.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans1c_image4_median_filterSize3x3.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(i)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/snp/5.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans1c_image5_median_filterSize3x3.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(j)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_3"
+
+\end_inset
+
+Median Filtering (a-e) Original Image with salt and pepper noise (f-j) Median
+ Filtered Images with varying filter size, 14*14, 3*3, 5*5, 20*20, 7*7 in-order
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Median Filtering
+\end_layout
+
+\begin_layout Standard
+Each output pixel contains the median value in the M-by-N neighborhood around
+ the corresponding pixel in the input image.
+ This is highly effective in removing salt-and-pepper noise.
+ In the Gaussian and average filters, the filtered value for the central
+ element can be a value which may not exist in the original image.
+ However this is not the case in median filtering, since the central element
+ is always replaced by some pixel value in the image.
+ This reduces the noise effectively.
+ The kernel size must be a positive odd integer.
+ The results of median filtering are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_3"
+
+\end_inset
+
+ (a-e shows original image and f-j shows the filtered images).
+ Note that filter size was different for each image due to fact that amount
+ of noise in each image varied significantly.
+ It should also be noted that due to a very high noise in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_3"
+
+\end_inset
+
+ (a) and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_3"
+
+\end_inset
+
+ (d) the recovered image is not very clear.
+ Code can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans1c"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Image Enhancement
+\end_layout
+
+\begin_layout Subsection
+Histogram
+\end_layout
+
+\begin_layout Standard
+The plot for histogram of each channel of 3 images is shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1a"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1b"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1c"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1a"
+
+\end_inset
+
+ it can be seen that the image is primarily red in color and histogram for
+ red channel dominates over all other color.
+ Similarly in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1b"
+
+\end_inset
+
+ the primary color of the image seems to be white, hence the histogram of
+ red, green and blue channels seems equally distributed.
+ In fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1c"
+
+\end_inset
+
+ we can see that the image has a lot of dark component in the bottom half
+ and a visible blue sky in the upper half and we can see blue dominating
+ in the histogram as well.
+ The results are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1a"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1a"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_1c"
+
+\end_inset
+
+ where (a) shows the original image and (b-d) show the histogram for each
+ of the channel.
+ Code can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2a"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Histogram Equalization 
+\end_layout
+
+\begin_layout Standard
+Consider an image whose pixel values are confined to some specific range
+ of values only.
+ For eg, brighter image will have all pixels confined to high values.
+ But a better image will have pixels from all regions of the image.
+ So we need to stretch this histogram to either ends which is referred to
+ as Histogram Equalization.
+ This normally improves the contrast of the image.
+\end_layout
+
+\begin_layout Standard
+Histogram Equalization calculation is based in cumulative distribution function
+ corresponding to the probability of an occurrence of a pixel of level i
+ in the image.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p_{x}(i)=p(x=i)=\frac{n_{i}}{n},0\leq i<L
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+L being the total number of gray levels in the image (typically 256), n
+ being the total number of pixels in the image.
+ In order to map the values back into their original range, the following
+ simple transformation needs to be applied on the result:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+y'=y.(max\{x\}-min\{x\})+min\{x\}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The above describes histogram equalization on a grayscale image.
+ However it can also be used on color images by applying the same method
+ separately to the Red, Green and Blue components of the RGB color values
+ of the image.
+ Note: however using this method may yield dramatic changes in the image's
+ color balance since the relative distributions of the color channels change
+ as a result of applying the algorithm.
+ Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Histogram-Equalization"
+
+\end_inset
+
+ shows the transformation of original condensed histogram to a relatively
+ uniformly distributed histogram.
+ 
+\end_layout
+
+\begin_layout Standard
+We have used inbuilt MATLAB function to produce histogram equalization for
+ each channel.
+ It can be seen that now all the values in histogram are approximately uniformly
+ distributed.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename histogram_equalization.png
+	scale 70
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Histogram-Equalization"
+
+\end_inset
+
+Histogram Equalization [2]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The results are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_2a"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_2b"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_2c"
+
+\end_inset
+
+ where (a) shows the original image, (b) shows the histogram equalized image
+ and (c-e) show the histogram for each of the channel.
+ Code can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2b"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Adaptive Histogram Equalization (CLAHE)
+\end_layout
+
+\begin_layout Standard
+Adaptive Histogram Equalization (CLAHE) is very similar to the normal histogram
+ equalization.
+ It differs from ordinary histogram equalization in the respect that the
+ adaptive method computes several histograms, each corresponding to a distinct
+ section of the image, and uses them to redistribute the lightness values
+ of the image.
+ It is therefore suitable for improving the local contrast and enhancing
+ the definitions of edges in each region of an image.
+ In our experiments we divided the image into 16*16 tiles, limited the contrast
+ to 0.005 and set the histogram distribution to uniform.
+\end_layout
+
+\begin_layout Standard
+The results are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_3a"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_3b"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2_3c"
+
+\end_inset
+
+ where (a) shows the original image, (b) shows the adaptive histogram equalized
+ image and (c-e) show the histogram for each of the channel.
+ Code can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2c"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2a_1.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_1a"
+
+\end_inset
+
+(a) Original Image (b) Histogram for R channel (c) Histogram for G channel
+ (d) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2a_2.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_1b"
+
+\end_inset
+
+(a) Original Image (b) Histogram for R channel (b) Histogram for G channel
+ (c) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2a_3.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_1c"
+
+\end_inset
+
+(a) Original Image (b) Histogram for R channel (b) Histogram for G channel
+ (c) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2b_1_new.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_2a"
+
+\end_inset
+
+(a) Original Image (b) Histogram Equalized Image (c) Histogram for R channel
+ (d) Histogram for G channel (e) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2b_2_new.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_2b"
+
+\end_inset
+
+(a) Original Image (b) Histogram Equalized Image (c) Histogram for R channel
+ (d) Histogram for G channel (e) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2b_3_new.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_2c"
+
+\end_inset
+
+(a) Original Image (b) Histogram Equalized Image (c) Histogram for R channel
+ (d) Histogram for G channel (e) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2c_1.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_3a"
+
+\end_inset
+
+(a) Original Image (b) Adaptive Histogram Equalized Image (c) Histogram
+ for R channel (d) Histogram for G channel (e) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement p
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2c_2.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_3b"
+
+\end_inset
+
+(a) Original Image (b) Adaptive Histogram Equalized Image (c) Histogram
+ for R channel (d) Histogram for G channel (e) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement !tp
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans2c_3.jpg
+	lyxscale 50
+	scale 22
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2_3c"
+
+\end_inset
+
+(a) Original Image (b) Adaptive Histogram Equalized Image (c) Histogram
+ for R channel (d) Histogram for G channel (e) Histogram for B channel
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Edge Detection
+\end_layout
+
+\begin_layout Subsection
+Sobel Edge Detection
+\end_layout
+
+\begin_layout Standard
+The Sobel operator [4] is based on convolving the image with a small, separable,
+ and integer-valued filter in the horizontal and vertical directions and
+ is therefore relatively inexpensive in terms of computations.
+ The directional filter 
+\begin_inset Formula $G_{x}$
+\end_inset
+
+ and 
+\begin_inset Formula $G_{y}$
+\end_inset
+
+ are as below
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G_{x}=\left[\begin{array}{ccc}
+-1 & 0 & 1\\
+-2 & 0 & 2\\
+-1 & 0 & 2
+\end{array}\right]
+\]
+
+\end_inset
+
+ and 
+\begin_inset Formula 
+\[
+G_{y}=\left[\begin{array}{ccc}
+-1 & -2 & -1\\
+0 & 0 & 0\\
+1 & 2 & 1
+\end{array}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Directional images can be computed as 
+\begin_inset Formula $I_{x}=G_{x}.conv.A$
+\end_inset
+
+ 
+\begin_inset Formula $I_{y}=G_{y}.conv.A$
+\end_inset
+
+ where conv represent the convolution and A represents the input image.
+ At each point in the image, the resulting gradient approximations can be
+ combined to give the gradient magnitude, using
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+I=\sqrt{I_{x}^{2}+I_{y}^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Canny Edge Detection
+\end_layout
+
+\begin_layout Standard
+The Process of Canny edge detection algorithm can be broken down to 5 different
+ steps: [1, 3]
+\end_layout
+
+\begin_layout Enumerate
+Apply Gaussian filter to smooth the image in order to remove the noise 
+\end_layout
+
+\begin_layout Enumerate
+Find the intensity gradients of the image 
+\end_layout
+
+\begin_layout Enumerate
+Apply non-maximum suppression to get rid of spurious response to edge detection
+ 
+\end_layout
+
+\begin_layout Enumerate
+Apply double threshold to determine potential edges 
+\end_layout
+
+\begin_layout Enumerate
+Track edge by hysteresis: Finalize the detection of edges by suppressing
+ all the other edges that are weak and not connected to strong edges.
+ 
+\end_layout
+
+\begin_layout Subsection
+Prewitt Edge Detection
+\end_layout
+
+\begin_layout Standard
+Prewitt operator [5] calculates the gradient of the image intensity at each
+ point, giving the direction of the largest possible increase from light
+ to dark and the rate of change in that direction.
+ The result therefore shows how "abruptly" or "smoothly" the image changes
+ at that point, and therefore how likely it is that part of the image represents
+ an edge, as well as how that edge is likely to be oriented.
+ In practice, the magnitude (likelihood of an edge) calculation is more
+ reliable and easier to interpret than the direction calculation.
+\end_layout
+
+\begin_layout Standard
+The directional filter 
+\begin_inset Formula $G_{x}$
+\end_inset
+
+ and 
+\begin_inset Formula $G_{y}$
+\end_inset
+
+ are as below
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G_{x}=\left[\begin{array}{ccc}
+-1 & 0 & 1\\
+-1 & 0 & 1\\
+-1 & 0 & 1
+\end{array}\right]
+\]
+
+\end_inset
+
+ and 
+\begin_inset Formula 
+\[
+G_{y}=\left[\begin{array}{ccc}
+-1 & -1 & -1\\
+0 & 0 & 0\\
+1 & 1 & 1
+\end{array}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Directional images can be computed as 
+\begin_inset Formula $I_{x}=G_{x}.conv.A$
+\end_inset
+
+ 
+\begin_inset Formula $I_{y}=G_{y}.conv.A$
+\end_inset
+
+ where conv represent the convolution and A represents the input image.
+ At each point in the image, the resulting gradient approximations can be
+ combined to give the gradient magnitude, using
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+I=\sqrt{I_{x}^{2}+I_{y}^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/img/3096.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_sobel_th_default.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_sobel_th_0_5.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_sobel_th_0_8.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_sobel_th_0_12.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3_1a"
+
+\end_inset
+
+(a) Original Image (b-e) Sobel Edge detected, (b) threshold=default, (c)
+ threshold=0.05 (d) threshold=0.08 (e) threshold=0.12 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/img/3096.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_canny_th_default.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_canny_th_0_4.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_canny_th_0_5.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_canny_th_0_7.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3_1b"
+
+\end_inset
+
+(a) Original Image (b-e) Canny Edge detected, (b) threshold=default, (c)
+ threshold=0.4 (d) threshold=0.5 (e) threshold=0.7 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/img/3096.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_prewitt_th_default.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_prewitt_th_0_5.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_prewitt_th_0_8.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_3096_prewitt_th_0_12.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3_1c"
+
+\end_inset
+
+(a) Original Image (b-e) Prewitt Edge detected, (b) threshold=default, (c)
+ threshold=0.05 (d) threshold=0.08 (e) threshold=0.12 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/img/21077.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_sobel_th_default.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_sobel_th_0_5.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_sobel_th_0_8.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_sobel_th_0_12.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3_1a-1"
+
+\end_inset
+
+(a) Original Image (b-e) Sobel Edge detected, (b) threshold=default, (c)
+ threshold=0.05 (d) threshold=0.08 (e) threshold=0.12 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/img/21077.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_canny_th_default.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_canny_th_0_4.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_canny_th_0_5.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_canny_th_0_7.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3_1b-1"
+
+\end_inset
+
+(a) Original Image (b-e) Canny Edge detected, (b) threshold=default, (c)
+ threshold=0.4 (d) threshold=0.5 (e) threshold=0.7 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename data/img/21077.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_prewitt_th_default.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_prewitt_th_0_5.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_prewitt_th_0_8.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(d)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename Results/ans3_21077_prewitt_th_0_12.jpg
+	lyxscale 50
+	scale 35
+	rotateOrigin center
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e)
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:3_1c-1"
+
+\end_inset
+
+(a) Original Image (b-e) Prewitt Edge detected, (b) threshold=default, (c)
+ threshold=0.05 (d) threshold=0.08 (e) threshold=0.12 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The rest of images are attached separately.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cccc}
+Method & Sobel & Canny & Prewitt\\
+ & Threshold & Threshold & Threhsold\\
+\begin{array}{c}
+\\
+3096.jpg\\
+8023.jpg
+\end{array} & \begin{array}{cccc}
+Default & 0.05 & 0.08 & 0.12\\
+0.8457 & 0.8465 & 0.8482 & 0.8478\\
+0.7697 & 0.5771 & 0.7481 & 0.8131
+\end{array} & \begin{array}{cccc}
+Default & 0.4 & 0.5 & 0.7\\
+0.5494 & 0.8473 & 0.84663 & 0.8411\\
+0.2630 & 0.7913 & 0.8304 & 0.8387
+\end{array} & \begin{array}{cccc}
+Default & 0.05 & 0.08 & 0.12\\
+0.8459 & 0.8468 & 0.8487 & 0.84698\\
+0.7685 & 0.588 & 0.75331 & 0.8162
+\end{array}
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+*Detailed results are attached separately.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Average accuracy of default performance of different edge detectors
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cccc}
+Method & Sobel & Canny & Prewitt\\
+Average\ Accuracy & 0.6667416144 & 0.2529561078 & 0.6723453346
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Average accuracy of default performance of different edge detectors
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Dataset
+\end_layout
+
+\begin_layout Standard
+We referred to the complete BSDS dataset [6].
+ The dataset contains 500 natural images that have been manually segmented.
+ The human annotations serve as ground truth.
+ The specific 10 images filtered for the class experiment have also been
+ included in this.
+ The ground truth was available as a mat file and we wrote a small program
+ to extract the different versions of ground truth available for each image.
+ We noticed that some images had up to 9 different values of ground truth.
+ We accepted the first value for each image for the purpose of comparison.
+ 
+\end_layout
+
+\begin_layout Subsection
+Experiment
+\end_layout
+
+\begin_layout Standard
+We applied the default Sobel, Canny and Prewitt filter on all 500 images.
+ The results of which have been attached separately along with the submission.
+ The average values are shown in table 2.
+\end_layout
+
+\begin_layout Standard
+For a few selected images we applied the Sobel filter with different threshold
+ values and noted the results in table 1.
+ Similarly, we experimented with Canny and Prewitt filter with different
+ threshold values.
+ The extended results is available in results.txt file attached with the
+ submission.
+ The default threshold value for each filter is determined per image.
+ In all cases, the default threshold is chosen heuristically, depending
+ on the input data.
+\end_layout
+
+\begin_layout Standard
+The results of Sobel, Canny and Prewitt filter are shown in fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3_1a"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3_1b"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3_1c"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3_1a-1"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3_1b-1"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:3_1c-1"
+
+\end_inset
+
+.
+ Code can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans3"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Discussion
+\end_layout
+
+\begin_layout Standard
+The results in Table 2 summaries the effectiveness of each of the edge detection
+ methods.
+ A few observations:
+\end_layout
+
+\begin_layout Enumerate
+Performance of canny and prewitt filter is almost comparable.
+ Under the hood, both filters work exactly the same, except for the difference
+ in values of directional filter.
+\end_layout
+
+\begin_layout Enumerate
+Sobel and Prewitt seems to be very aggressive and looses a lot of edges
+ with a very small threshold whereas Canny is less aggressive.
+\end_layout
+
+\begin_layout Enumerate
+On average Prewitt performs the best out of three with default values but
+ Canny outperforms the other two when the parameters are tuned for each
+ image.
+ This is due to the fact that canny removes the noise using a gaussian filter
+ first.
+\end_layout
+
+\begin_layout Enumerate
+Since Canny filter captures a lot of details, it is prone to resulting in
+ a lot of nomadic non-zero pixels when used with image which has a lot of
+ minute details spread across the image, which reduces the performance of
+ the filter.
+\end_layout
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+[1]
+\end_layout
+
+\end_inset
+
+J.
+ Canny.
+ "A computational approach to edge detection".
+ PAMI, 1986.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+[2]
+\end_layout
+
+\end_inset
+
+http://goo.gl/pRj2Qq
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+[3]
+\end_layout
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Canny_edge_detector
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+[4]
+\end_layout
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Sobel_operator
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+[5]
+\end_layout
+
+\end_inset
+
+https://en.wikipedia.org/wiki/Prewitt_operator
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+[6]
+\end_layout
+
+\end_inset
+
+Contour Detection and Hierarchical Image Segmentation P.
+ Arbelaez, M.
+ Maire, C.
+ Fowlkes and J.
+ Malik.
+ IEEE TPAMI, Vol.
+ 33, No.
+ 5, pp.
+ 898-916, May 2011.
+\end_layout
+
+\begin_layout Appendix
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/main.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Main}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/ans1a.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer1a},label={ans1a}"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/ans1b.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer1b},label={ans1b}"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/ans1c.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer1c},label={ans1c}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/ans2a.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer2a},label={ans2a}"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/ans2b.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer2b},label={ans2b}"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/ans2c.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer2c},label={ans2c}"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "code/ans3.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer3},label={ans3}"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "BSDS500/convertgroundtruth.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Convert gound truth to image},label={convertor}"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
