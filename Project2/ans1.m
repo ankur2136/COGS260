@@ -10,7 +10,7 @@ tic
 confusion_mat = zeros(10,10);
 index_wrong = -1*ones(10000, 1);
 number_correct = 0;
-for i=1:1000
+for i=1:100
     dist = 100000;
     chosen_value = -1;
     test = test_images(:,i);
