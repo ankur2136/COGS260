@@ -10,7 +10,9 @@ tic
 confusion_mat = zeros(10,10);
 index_wrong = -1*ones(10000, 1);
 number_correct = 0;
-for i=1:100
+
+%%
+for i=8001:10000
     dist = 100000;
     chosen_value = -1;
     test = test_images(:,i);
@@ -34,3 +36,9 @@ for i=1:100
 end
 toc
 disp (number_correct);
+%%
+clear train_images
+clear test_images
+clear train_labels
+clear test_labels
+save('workspace1.mat')

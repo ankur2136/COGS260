@@ -29,3 +29,11 @@ end
 
 toc
 disp (number_correct);
+%%
+clear train_images
+clear test_images
+clear train_labels
+clear test_labels
+clear test
+clear train
+save('workspace.mat')
