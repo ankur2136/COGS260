@@ -4,7 +4,10 @@
 \begin_header
 \textclass IEEEtran
 \begin_preamble
-
+\usepackage{pgfplots}
+\usetikzlibrary{calc}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes,positioning}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -216,22 +219,190 @@ reference "eq:confusionmat"
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float table
+placement t
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset Formula 
-\begin{equation}
-C_{f}=\begin{array}{ccccccccccc}
+\[
+Conf_{mat}=\begin{array}{ccccccccccc}
 \downarrow\rightarrow & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
-0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
-1 & 0 & 0 & 3 & 1 & 0 & 1 & 1 & 0 & 0 & 0\\
-2 & 9 & 0 & 0 & 4 & 0 & 0 & 2 & 10 & 3 & 1\\
-3 & 0 & 0 & 1 & 0 & 0 & 13 & 0 & 5 & 9 & 5\\
-4 & 1 & 3 & 0 & 0 & 0 & 0 & 6 & 3 & 1 & 28\\
-5 & 1 & 1 & 0 & 17 & 1 & 0 & 10 & 1 & 4 & 5\\
-6 & 4 & 3 & 0 & 0 & 2 & 3 & 0 & 0 & 0 & 0\\
-7 & 2 & 11 & 5 & 2 & 2 & 0 & 0 & 0 & 0 & 11\\
-8 & 6 & 1 & 1 & 13 & 2 & 3 & 5 & 4 & 0 & 4\\
-9 & 5 & 6 & 1 & 4 & 9 & 3 & 1 & 8 & 4 & 0
-\end{array}\label{eq:confusionmat}
-\end{equation}
+0 & 978 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+1 & 0 & 1129 & 3 & 1 & 0 & 1 & 1 & 0 & 0 & 0\\
+2 & 9 & 0 & 1003 & 4 & 0 & 0 & 2 & 10 & 3 & 1\\
+3 & 0 & 0 & 1 & 977 & 0 & 13 & 0 & 5 & 9 & 5\\
+4 & 1 & 3 & 0 & 0 & 940 & 0 & 6 & 3 & 1 & 28\\
+5 & 1 & 1 & 0 & 17 & 1 & 852 & 10 & 1 & 4 & 5\\
+6 & 4 & 3 & 0 & 0 & 2 & 3 & 946 & 0 & 0 & 0\\
+7 & 2 & 11 & 5 & 2 & 2 & 0 & 0 & 995 & 0 & 11\\
+8 & 6 & 1 & 1 & 13 & 2 & 3 & 5 & 4 & 935 & 4\\
+9 & 5 & 6 & 1 & 4 & 9 & 3 & 1 & 8 & 4 & 968
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{equation}
+\end_layout
+
+\begin_layout Plain Layout
+
+ConfMat_{norm} = 
+\backslash
+begin{array}{cccccccccc}
+\end_layout
+
+\begin_layout Plain Layout
+
+    0.9980  &  0.0010    &     0      &   0   &      0     &    0      & 
+  0  &  0.0010     &    0      &   0    
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    0 &   0.9947   & 0.0026  &  0.0009     &    0   & 0.0009 &   0.0009  &  
+     0   &      0    &     0    
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	0.0087  &     0   & 0.9719  &  0.0039    &     0    &     0  &  0.0019   &
+ 0.0097   & 0.0029  &  0.0010   
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    0     &    0 0.0010 &   0.9673   &      0 &   0.0129   &      0  &  0.0050
+  &  0.0089  &  0.0050    
+\backslash
+
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	0.0010   & 0.0031    &   0  &       0  &  0.9572  &       0  &  0.0061   &
+ 0.0031 &   0.0010  &  0.0285   
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	0.0011   & 0.0011    &   0   & 0.0191  &  0.0011   & 0.9552  &  0.0112   & 0.0011
+  &  0.0045  &  0.0056  
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	0.0042  &  0.0031    &  0     &    0   & 0.0021  &  0.0031  &  0.9875    & 
+    0    &     0     &    0  
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	0.0019   & 0.0107    &  0.0049 &   0.0019   & 0.0019 &        0  &       0 
+ &  0.9679  &       0  &  0.0107   
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	0.0062   & 0.0010   &   0.0010  &  0.0133  &  0.0021  &  0.0031  &  0.0051  &
+  0.0041  &  0.9600  &  0.0041   
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	0.0050   & 0.0059  &    0.0010   & 0.0040 &   0.0089   & 0.0030  &  0.0010  &
+  0.0079  &  0.0040 &   0.9594
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{array}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{equation}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Confusion Matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -520,6 +691,505 @@ reference "ans1a-1"
 
 \begin_layout Section
 Support Vector Machine
+\end_layout
+
+\begin_layout Section
+Spatial Pyramid Matching 
+\end_layout
+
+\begin_layout Section
+Convolutional Neural Network
+\end_layout
+
+\begin_layout Section
+Deep Belief Nets
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{axis} [dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.style={shorten >=-#1,shorten <=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.default=1cm,  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.style={shorten >=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.default=1cm, 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ymin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+ymax=1.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmax=13,
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel=ITERATIONS
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 1,0.2429) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 2,0.0910) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 3,0.0680) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 4,0.0571) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 5,0.0513) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 6,0.0449) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 7,0.0396) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 8,0.0369) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 9,0.0331) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 10,0.0313) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 11,0.0306) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.5] at (axis cs: 12,0.0261) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [red] plot [smooth] coordinates {(10,24.29) (20,09.10) (30,6.80) (40,5.71)
+ (50,5.13) (60,4.49) (70,3.96) (80,3.69) (90,3.31) (100,3.13) (110,3.06) (120,2.61)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 1, 0.9259) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 2, 0.9727) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 3, 0.9789) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 4, 0.9832) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 5, 0.9841) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 6, 0.9859) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 7, 0.9874) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 8, 0.9889) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 9, 0.9901) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 10, 0.9901) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 11, 0.9903) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 12, 0.9916) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [blue] plot [smooth] coordinates {(10,92.59) (20,97.27) (30,97.89) (40,98.32)
+ (50,98.41) (60,98.59) (70,98.74) (80,98.89) (90,99.01) (100,99.01) (110,99.03)
+ (120,99.16) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 1, 0.9816) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 2, 0.9872) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 3, 0.9902) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 4, 0.9885) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 5, 0.9904) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 6, 0.9914) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 7, 0.9901) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 8, 0.9909) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 9, 0.9916) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 10, 0.9903) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 11, 0.9918) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 12, 0.9927) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [green] plot [smooth] coordinates {(10,98.16) (20,98.72) (30,99.02) (40,98.85)
+ (50,99.04) (60,99.14) (70,99.01) (80,99.09) (90,99.16) (100,99.03) (110,99.18)
+ (120,99.27) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 1, 0.0578) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 2, 0.0388) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 3, 0.0329) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 4, 0.0345) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 5, 0.0301) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 6, 0.0266) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 7, 0.0296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 8, 0.0296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 9, 0.0257) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 10, 0.0317) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 11, 0.0250) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 12, 0.0251) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [black] plot [smooth] coordinates {(10,5.78) (20,3.88) (30,3.29) (40,3.45)
+ (50,3.01) (60,2.66) (70,2.96) (80,2.96) (90,2.57) (100,3.17) (110,2.50) (120,2.51)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{axis}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

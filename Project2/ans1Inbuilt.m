@@ -35,10 +35,10 @@ toc
 confusion_mat = zeros(10,10);
 index_wrong2 = -1*ones(10000, 1);
 %%
-for i=1:length(diff1)
-    if (diff2(i) ~= 0)
+for i=1:length(diff2)
         confusion_mat(test_labels(i)+1, predictions2(i)+1) = ... 
             confusion_mat(test_labels(i)+1, predictions2(i)+1) + 1;
+    if (diff2(i) ~= 0)
         index_wrong2(i) = predictions2(i);
     end
 end
