@@ -86,7 +86,7 @@
 \begin_body
 
 \begin_layout Title
-COGS 260: Assignment 2
+COGS 260: Image Processing, Assignment 2
 \end_layout
 
 \begin_layout Author
@@ -201,16 +201,9 @@ Nearest Neighbor classification results
 
 \begin_layout Standard
 Eq.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:confusionmat"
-
-\end_inset
-
- represents the confusion matrix where row represent the actual value and
- columns represent the calculated value and each entry represents how many
- times a number was confused with other number in the dataset.
+ 1 represents the confusion matrix where row represent the actual value
+ and columns represent the calculated value and each entry represents how
+ many times a number was confused with other number in the dataset.
  The following matrix is generated when using Cosine distance method.
  From the confusion matrix we can see that the number 4 is mostly confused
  with number 9.
@@ -693,16 +686,163 @@ reference "ans1a-1"
 Support Vector Machine
 \end_layout
 
+\begin_layout Standard
+SVM is a powerful tool for the classification based on Structural Risk Minimizat
+ion (SRM) principle by Vladimir Vapnik.
+ SVM constructs a hyper-plane or a set of hyper-planes in a high dimensional
+ space which can be used for the tasks such as classification and regression.
+ SVM was originally developed for solving two-class problems.
+ Considering a two class problem, we start with the training set of pattern
+ points 
+\begin_inset Formula $x_{i}\in R^{N},i=1,2,3,4...,I$
+\end_inset
+
+, where each pattern point 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ belongs to one of two classes indicated by the label 
+\begin_inset Formula $y\in{+1,-1}$
+\end_inset
+
+ , and I is the number of the training pattern points.
+ The data to be classified by the SVM may not be linearly separable in its
+ original domain.
+ In the linearly non- separable case the data is projected into a higher
+ dimensional feature space using Kernel functions defined by 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:2"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K(x_{i},x_{j})=\psi(x_{i})^{T}.\psi(x_{j)}\label{eq:2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $\psi$
+\end_inset
+
+ is the function that maps the original data onto the higher dimension space
+ H.
+ The SVMs create a hyper-plane in H with the decision boundary given by
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:2-1"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+f(x)=\sum_{i=1}^{N}y_{i}\alpha_{i}K(x_{i},x_{j})+b\label{eq:2-1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\alpha_{i}$
+\end_inset
+
+ is the non-negative Lagrange multiple, subjected to quadratic optimization
+ problem.
+\end_layout
+
+\begin_layout Standard
+Minimize:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+L(w,b,a)=\sum_{i=1}^{N}\alpha_{i}-\frac{1}{2}\sum_{i=1}^{N}\sum_{j=1}^{N}y_{i}y_{j}\alpha_{i}\alpha_{j}K(x_{i},x_{j})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+subjected to : 
+\begin_inset Formula $0\leq\alpha_{i}\leq C_{i},i=$
+\end_inset
+
+1,2,...N
+\end_layout
+
+\begin_layout Standard
+where the cost parameter C makes the compromise between allowing training
+ errors and rigid margins.
+ A few kernel functions that have been used in this study are:
+\end_layout
+
+\begin_layout Enumerate
+Linear Kernel: 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K(x_{i},x_{j})=ax_{i}^{T}x_{j}+b
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Radial Basis Function:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K(x_{i},x_{j}=\exp(-\gamma\left\Vert x_{i}-x_{j}\right\Vert ^{2})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where the adjustable parameters are slope 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, constant terms a, b.
+\end_layout
+
 \begin_layout Section
 Spatial Pyramid Matching 
 \end_layout
 
 \begin_layout Section
 Convolutional Neural Network
-\end_layout
-
-\begin_layout Section
-Deep Belief Nets
 \end_layout
 
 \begin_layout Standard
@@ -1190,6 +1330,10 @@ end{tikzpicture}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section
+Deep Belief Nets
 \end_layout
 
 \begin_layout Standard

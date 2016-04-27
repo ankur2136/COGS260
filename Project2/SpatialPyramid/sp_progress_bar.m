@@ -6,13 +6,13 @@ if nargin > 1
         str = 'Step: ';
     end
     ha = subplot(2,1,1, 'parent', fig); cla(ha)
-    p = patch([0 1 1 0],[0 0 1 1],'w','EraseMode','none', 'parent', ha);
-    p = patch([0 1 1 0]*nf/Nf,[0 0 1 1],'g','EdgeColor','k','EraseMode','none', 'parent', ha);
+    p = patch([0 1 1 0],[0 0 1 1],'w','EraseMode','none', 'parent', ha); %#ok<NASGU>
+    p = patch([0 1 1 0]*nf/Nf,[0 0 1 1],'g','EdgeColor','k','EraseMode','none', 'parent', ha);  %#ok<NASGU>
     axis(ha,'off')
     title(sprintf('%s %d of %d',str,nf,Nf), 'parent', ha)
     ha = subplot(2,1,2, 'parent', fig); cla(ha)
-    p = patch([0 1 1 0],[0 0 1 1],'w','EraseMode','none', 'parent', ha);
-    p = patch([0 1 1 0]*ni/Ni,[0 0 1 1],'r','EdgeColor','k','EraseMode','none', 'parent', ha);
+    p = patch([0 1 1 0],[0 0 1 1],'w','EraseMode','none', 'parent', ha); %#ok<NASGU>
+    p = patch([0 1 1 0]*ni/Ni,[0 0 1 1],'r','EdgeColor','k','EraseMode','none', 'parent', ha); %#ok<NASGU>
     axis(ha,'off')
     title(sprintf('%d/%d (%.1f/%.1f mins)',ni,Ni,toc/60,(Ni/ni)*(toc/60)), 'parent', ha)
     drawnow
