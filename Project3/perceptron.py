@@ -1,7 +1,7 @@
 import numpy as np
 
 def dot_product(a, b):
-    return sum([a[i]*b[i] for i in range(len(a))])
+    return np.array(np.dot(np.asarray(a), np.asarray(b)))	
 
 
 def decision( x, w, theta ):
@@ -9,9 +9,9 @@ def decision( x, w, theta ):
 
 
 def perceptron( training_data ):
-    theta = 0
+    theta = 1
     iteration = 0
-    weights = [ 0, 0, 0, 0 ]
+    weights = [0.01, 0.01, 0.01, 0.01]
     converged = False
     
     while not converged:
@@ -80,7 +80,7 @@ for key, val in train.iteritems():
 
 test_z = {}
 for key, val in test.iteritems():
-        key_new = tuple(np.array((key-train_mean)/train_std))
+        key_new = tuple(np.array((key-test_mean)/test_std))
         test_z[key_new] = val
 	
 
@@ -95,6 +95,7 @@ for key, val in test.iteritems():
 print ("No Z scoring\n")
 print ("Total Correct = {}, out of {}".format(total_correct, len(test))) 
 
+print ("\n\n")
 
 
 weights1, theta1 = perceptron( train_z )
@@ -106,5 +107,3 @@ for key, val in test_z.iteritems():
    
 print ("With Z scoring\n")
 print ("Total Correct = {}, out of {}".format(total_correct, len(test_z)))
-
-

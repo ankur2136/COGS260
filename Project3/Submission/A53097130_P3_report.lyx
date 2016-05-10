@@ -1,0 +1,6972 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{pgfplots}
+\usetikzlibrary{calc}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes,positioning}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\paperheight 1in
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "basicstyle={\ttfamily\small}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+COGS 260: Image Processing, Assignment 3
+\end_layout
+
+\begin_layout Author
+Ankur Jain, A53097130, anj022@ucsd.edu
+\end_layout
+
+\begin_layout Abstract
+In this project we present different methods of classification (multi-class)
+ on MNIST, CIFAR-10 and UCI-iris dataset.
+ The MNIST database consists of a total of 70000 including 60000 training
+ samples and 10000 test samples, CIFAR-10 has 50,000 RGB images as train
+ set and 10000 images as test set.
+ Both MNIST and CIFAR-10 has 10 different classes We compare the performance
+ of various classification models and do a comparative study.
+\end_layout
+
+\begin_layout Abstract
+
+\series bold
+Keywords: Convolutional Neural Networks, Feed Forward Neural Nets, Perceptron.
+\end_layout
+
+\begin_layout Section
+Perceptron
+\end_layout
+
+\begin_layout Subsection
+Scatter Plot
+\end_layout
+
+\begin_layout Standard
+Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:ScatterPlot"
+
+\end_inset
+
+ (a-f) shows the scatter plot of the iris training set between all combinations
+ of features.
+ Blue dots represent 1 class and yellow represents the other.
+ In all the plots we can see that the training data is linearly separable.
+ Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans1a"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/ankur/Desktop/Courses/COGS260/Project3/1a1.jpg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/ankur/Desktop/Courses/COGS260/Project3/1a2.jpg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a) 
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(b) 
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/ankur/Desktop/Courses/COGS260/Project3/1a3.jpg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/ankur/Desktop/Courses/COGS260/Project3/1a4.jpg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(c) 
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(d) 
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/ankur/Desktop/Courses/COGS260/Project3/1a5.jpg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename /Users/ankur/Desktop/Courses/COGS260/Project3/1a6.jpg
+	lyxscale 50
+	scale 40
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(e) 
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+(f) 
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:ScatterPlot"
+
+\end_inset
+
+a-f Plot of between all combination of features
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Training Perceptron
+\end_layout
+
+\begin_layout Itemize
+Initial Weight = [0.01, 0.01, 0.01, 0.01] 
+\end_layout
+
+\begin_layout Itemize
+theta = 1
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 1
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2bc"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cccc}
+Pre-processing & Accuracy(\%) &  & Iterations\\
+ & Train & Test\\
+No & 100 & 100 & 7
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:PerceptronResults"
+
+\end_inset
+
+Perceptron Results on Iris Database
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Training Perceptron with z-scoring 
+\end_layout
+
+\begin_layout Itemize
+Initial Weight = [0.01, 0.01, 0.01, 0.01]
+\end_layout
+
+\begin_layout Itemize
+theta = 1
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 1
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2bc"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cccc}
+Pre-processing & Accuracy(\%) &  & Iterations\\
+ & Train & Test\\
+Z-scoring & 100 & 100 & 1
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:PerceptronResults-1"
+
+\end_inset
+
+Perceptron Results on Iris Database
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After using z-scoring the convergence was very fast and completed in just
+ 1 iteration as compared to the non-processed data which took 7 iterations.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Feed Forward Neural Network
+\end_layout
+
+\begin_layout Subsection
+1 Hidden Layer
+\end_layout
+
+\begin_layout Itemize
+No Pre-processing
+\end_layout
+
+\begin_layout Itemize
+Number of hidden layers = 1
+\end_layout
+
+\begin_layout Itemize
+Other layers = Input layer (Size = 784) and Output Layer (Size = 10)
+\end_layout
+
+\begin_layout Itemize
+Initial Weight W = np.random.uniform(low=-np.sqrt(6.0/(D+h)), high=np.sqrt(6.0/(D+h)),
+ size=(D, h)) 
+\end_layout
+
+\begin_layout Itemize
+Initial Weight W2 = np.random.uniform(low=-np.sqrt(6.0/(k+h)), high=np.sqrt(6.0/(k+h))
+, size=(h, k)) 
+\end_layout
+
+\begin_layout Itemize
+b = np.zeros((1,h)) #Bias1
+\end_layout
+
+\begin_layout Itemize
+Initial Bias b2 = np.zeros((1,k)) #Bias2
+\end_layout
+
+\begin_layout Itemize
+Weight Update Rules
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+W += -step_size * dW 
+\end_layout
+
+\begin_layout Itemize
+b += -step_size * db 
+\end_layout
+
+\begin_layout Itemize
+W2 += -step_size * dW2 
+\end_layout
+
+\begin_layout Itemize
+b2 += -step_size * db2 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Step_size = 1e-1 
+\end_layout
+
+\begin_layout Itemize
+D = 784 #feature Dimension
+\end_layout
+
+\begin_layout Itemize
+h = 100 # Size of hidden layer
+\end_layout
+
+\begin_layout Itemize
+Activation function for output layer = softmax 
+\end_layout
+
+\begin_layout Itemize
+Activation function used for other layers = ReLu
+\end_layout
+
+\begin_layout Itemize
+k=10; #Number of classes
+\end_layout
+
+\begin_layout Itemize
+Iteration vs Loss is tabulated in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:FFN_1a"
+
+\end_inset
+
+ and test/train accuracy in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:FFN_1a-1"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2_1_3"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cc}
+Iteration & Loss\\
+0 & 2.5940543069617954\\
+50 & 0.747715206574926\\
+100 & 0.5687253541322465\\
+150 & 0.5102307359885822\\
+200 & 0.4798862678931431\\
+250 & 0.4603233746841243\\
+300 & 0.44609411247272157\\
+350 & 0.4348931330999727\\
+400 & 0.4255995357224782\\
+450 & 0.41765853956633214\\
+500 & 0.4105747171711387\\
+550 & 0.4041691236355091\\
+600 & 0.39830549449054325\\
+650 & 0.3928600317589662\\
+700 & 0.3877499429289797\\
+750 & 0.38291032761117877\\
+790 & 0.3792199839536094
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:FFN_1a"
+
+\end_inset
+
+Feed Forward Network 1 hidden layer Iteration vs Loss
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cc}
+Set & Accuracy\%\\
+train & 0.9289\\
+test & 0.9275167
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:FFN_1a-1"
+
+\end_inset
+
+Feed Forward Network 1 hidden layer Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+2 Hidden Layers with back propagation 
+\end_layout
+
+\begin_layout Itemize
+No Pre-processing
+\end_layout
+
+\begin_layout Itemize
+Number of hidden layers = 2
+\end_layout
+
+\begin_layout Itemize
+Other layers = Input layer (Size = 784) and Output Layer (Size = 10)
+\end_layout
+
+\begin_layout Itemize
+Initial Weights 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+W = np.random.uniform(low=-np.sqrt(6.0/(D+h)), high=np.sqrt(6.0/(D+h)), size=(D,
+ h)) 
+\end_layout
+
+\begin_layout Itemize
+W1 = np.random.uniform(low=-np.sqrt(6.0/(h+h)), high=np.sqrt(6.0/(h+h)), size=(h,
+ h)) 
+\end_layout
+
+\begin_layout Itemize
+W2 = np.random.uniform(low=-np.sqrt(6.0/(k+h)), high=np.sqrt(6.0/(k+h)), size=(h,
+ k))
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+b = np.zeros((1,h)) #Bias1
+\end_layout
+
+\begin_layout Itemize
+Initial Bias b2 = np.zeros((1,k)) #Bias2
+\end_layout
+
+\begin_layout Itemize
+Weight Update Rules
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+W += -step_size * dW 
+\end_layout
+
+\begin_layout Itemize
+b += -step_size * db 
+\end_layout
+
+\begin_layout Itemize
+W1 += -step_size * dW1 
+\end_layout
+
+\begin_layout Itemize
+b1 += -step_size * db1 
+\end_layout
+
+\begin_layout Itemize
+W2 += -step_size * dW2 
+\end_layout
+
+\begin_layout Itemize
+b2 += -step_size * db2 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Step_size = 1e-1 
+\end_layout
+
+\begin_layout Itemize
+D = 784 #feature Dimension
+\end_layout
+
+\begin_layout Itemize
+h = 100 # Size of both hidden layer
+\end_layout
+
+\begin_layout Itemize
+Activation function for output layer = softmax 
+\end_layout
+
+\begin_layout Itemize
+Activation function used for other layers = ReLu
+\end_layout
+
+\begin_layout Itemize
+k=10; #Number of classes
+\end_layout
+
+\begin_layout Itemize
+Iteration vs Loss is tabulated in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:FFN_2a"
+
+\end_inset
+
+ and test/train accuracy in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:FFN_2a1"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2_2"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cc}
+Iteration & Loss\\
+0 & 2.462944\\
+50 & 1.108595\\
+100 & 0.636004\\
+150 & 0.487001\\
+200 & 0.449254\\
+250 & 0.432056\\
+300 & 0.407610\\
+350 & 0.393729\\
+400 & 0.380419\\
+450 & 0.370034\\
+500 & 0.360481\\
+550 & 0.351053\\
+600 & 0.342832\\
+650 & 0.335231\\
+700 & 0.328106\\
+750 & 0.321428\\
+800 & 0.315152\\
+850 & 0.309406\\
+900 & 0.304001\\
+950 & 0.298656\\
+1000 & 0.293429\\
+1050 & 0.288491\\
+1100 & 0.283986
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:FFN_2a"
+
+\end_inset
+
+Feed Forward Network 2 hidden layer Iteration vs Loss
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cc}
+Set & Accuracy\%\\
+train & 97.67\\
+test & 96.19
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:FFN_2a1"
+
+\end_inset
+
+Feed Forward Network 2 hidden layer Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We notice that after adding another layer each iteration takes longer time
+ and convergence was slower but the accuracy was greater than while using
+ only 1 hidden layer.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+1 Hidden Layer with Regularization and Momentum
+\end_layout
+
+\begin_layout Itemize
+No Pre-processing
+\end_layout
+
+\begin_layout Itemize
+Number of hidden layers = 1
+\end_layout
+
+\begin_layout Itemize
+Other layers = Input layer (Size = 784) and Output Layer (Size = 10)
+\end_layout
+
+\begin_layout Itemize
+Step_size = 1e-1 
+\end_layout
+
+\begin_layout Itemize
+D = 784 #feature Dimension
+\end_layout
+
+\begin_layout Itemize
+h = 100 # Size of hidden layer
+\end_layout
+
+\begin_layout Itemize
+k=10; #Number of classes
+\end_layout
+
+\begin_layout Itemize
+Activation function used = ReLu
+\end_layout
+
+\begin_layout Itemize
+Initial Weight W = np.random.uniform(low=-np.sqrt(6.0/(D+h)), high=np.sqrt(6.0/(D+h)),
+ size=(D, h)) 
+\end_layout
+
+\begin_layout Itemize
+Initial Weight W2 = np.random.uniform(low=-np.sqrt(6.0/(k+h)), high=np.sqrt(6.0/(k+h))
+, size=(h, k)) 
+\end_layout
+
+\begin_layout Itemize
+Initial bias b = np.zeros((1,h)) #Bias1
+\end_layout
+
+\begin_layout Itemize
+Initial Bias b2 = np.zeros((1,k)) #Bias2
+\end_layout
+
+\begin_layout Itemize
+Weight update rules:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+dW2 += reg * W2 
+\end_layout
+
+\begin_layout Itemize
+dW += reg * W
+\end_layout
+
+\begin_layout Itemize
+W += 0.9 * vW - step_size * dW 
+\end_layout
+
+\begin_layout Itemize
+b += 0.9 * vB - step_size * db 
+\end_layout
+
+\begin_layout Itemize
+W2 += 0.9 * vW2 - step_size * dW2 
+\end_layout
+
+\begin_layout Itemize
+b2 += 0.9 * vB2 - step_size * db2 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Regularization strength = 1e-3
+\end_layout
+
+\begin_layout Itemize
+Momentum = 0.9
+\end_layout
+
+\begin_layout Itemize
+Iteration vs Loss is tabulated in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:FFN_3a"
+
+\end_inset
+
+ and test/train accuracy in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:FFN_3a1"
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans2_1_3"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cc}
+Iteration & Loss\\
+0 & 2.5617856828048344\\
+50 & 0.44050862192365337\\
+100 & 0.38326191771064244\\
+150 & 0.3462090066700228\\
+200 & 0.3156635527124032\\
+250 & 0.29112958484072776\\
+300 & 0.27164157543487233\\
+350 & 0.2558534246926922\\
+400 & 0.24278012560295464\\
+450 & 0.2319293009798825\\
+500 & 0.22274727625029428\\
+550 & 0.21491594644338755\\
+600 & 0.20820578323365566\\
+650 & 0.20240326850698986\\
+700 & 0.19736016076443563\\
+720 & 0.19553153191873873
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:FFN_3a"
+
+\end_inset
+
+Feed Forward Network 1 hidden layer and regularization and momentum Iteration
+ vs Loss
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cc}
+Set & Accuracy\%\\
+train & 97.33\\
+test & 96.68
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:FFN_3a1"
+
+\end_inset
+
+Feed Forward Network 1 hidden layer and regularisation and momentum Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With only regularization enabled, the convergence as well as results improved
+ only by a small factor but when we enabled both regularization and momentum,
+ the convergence was fast and accuracy improved by around 4%.
+ There was no effect on the run time for each iteration when compared to
+ the section 2.1
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Convolutional Neural Network
+\end_layout
+
+\begin_layout Standard
+Convolutional Neural Networks or CNNs[2] exploit spatially-local correlation
+ by enforcing a local connectivity pattern between neurons of adjacent layers.
+ In other words, the inputs of hidden units in layer m are from a subset
+ of units in layer m-1, units that have spatially contiguous receptive fields.
+ 
+\end_layout
+
+\begin_layout Standard
+A feature map is obtained by repeated application of a function across sub-regio
+ns of the entire image, in other words, by convolution of the input image
+ with a linear filter, adding a bias term and then applying a non-linear
+ function.
+\end_layout
+
+\begin_layout Subsection
+Stochastic Gradient Descent
+\end_layout
+
+\begin_layout Standard
+Model
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(32, 3, 3, border_mode='same', input_shape=(img_channels,
+ img_rows, img_cols))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(32, 3, 3)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(MaxPooling2D(pool_size=(2, 2))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.25))
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(64, 3, 3, border_mode='same')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(64, 3, 3)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(MaxPooling2D(pool_size=(2, 2))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.25)) model.add(Flatten())
+\end_layout
+
+\begin_layout Itemize
+model.add(Dense(512)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.5))
+\end_layout
+
+\begin_layout Itemize
+model.add(Dense(nb_classes)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('softmax'))
+\end_layout
+
+\begin_layout Itemize
+sgd = SGD(lr=0.01, decay=0, momentum=0.0, nesterov=False) 
+\end_layout
+
+\begin_layout Itemize
+model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'
+]) 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cccccccc}
+S.No & Layers & Input\,Size\,to\,Layer & Activation\,Type & Dropout & PoolSize & Stride & No\,of\,Filters\\
+1 & Input & (3,32,32) & -\\
+2 & Conv2D & (3,32,32) & - &  &  & 1 & 32\\
+3 & Activation & (32,32,32) & RELU\\
+4 & Conv2D & (32,32,32) & - &  &  & 1 & 32\\
+5 & Activation & (32,30,30) & RELU\\
+6 & MaxPool2D & (32,30,30) & - &  & (2,2)\\
+7 & Dropout & (32,15,15) & - & 0.25\\
+8 & Conv2D & (32,15,15) & - &  &  & 1 & 64\\
+9 & Activation & (64,15,15) & RELU\\
+10 & Conv2D & (64,15,15) & - &  &  & 1 & 64\\
+11 & Activation & (64,13,13) & RELU\\
+12 & MaxPool2D & (64,13,13) & - &  & (2,2)\\
+13 & Dropout & (64,6,6) & - & 0.25\\
+14 & Flatten & (64,6,6) & -\\
+15 & Dense & 2304 & -\\
+16 & Activation & 512 & RELU\\
+17 & Dropout & 512 & - & 0.5\\
+18 & Dense & 512 & -\\
+19 & Activation & 10 & Softmax
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)Layer Details
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+batch_size = 32 
+\end_layout
+
+\begin_layout Itemize
+nb_classes = 10 
+\end_layout
+
+\begin_layout Itemize
+nb_epoch = 20 
+\end_layout
+
+\begin_layout Itemize
+img_rows, img_cols = 32, 32, img_channels = 3 
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 0.01
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)Other Details
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:NA31"
+
+\end_inset
+
+Network Architecture
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Stochastic-Gradient-CNN"
+
+\end_inset
+
+ shows the loss and accuracy in each epoch.
+ 20th epoch gets an Train accuracy of 80.214% and Test accuracy 74.84%.
+ Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans3_1"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{axis} [dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.style={shorten >=-#1,shorten <=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.default=1cm,  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.style={shorten >=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.default=1cm, 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ymin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+ymax=2.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmax=20,
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel=Epoch,
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel=Loss/Accuracy
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 1,0.3928) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 2,0.4254) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 3,0.4899) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 4,0.5561) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 5,0.5892) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 6,0.5977) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 7,0.6357) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 8,0.6227) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 9,0.6454) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 10,0.6571) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 11,0.6943) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 12,0.6906) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 13,0.7085) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 14,0.6912) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 15,0.7092) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 16,0.7168) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 17,0.7277) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 18,0.7278) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 19,0.7259) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 20,0.7484) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [red] plot [smooth] coordinates {(10,24.29) (20,09.10) (30,6.80) (40,5.71)
+ (50,5.13) (60,4.49) (70,3.96) (80,3.69) (90,3.31) (100,3.13) (110,3.06) (120,2.61)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 1, 1.6803) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 2, 1.6213) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 3, 1.4495) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 4, 1.2300) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 5, 1.1600) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 6, 1.1482) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 7, 1.0339) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 8, 1.0721) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 9, 1.0050) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 10, 0.9678) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 11, 0.8857) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 12, 0.8808) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 13, 0.8450) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 14, 0.9034) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 15, 0.8438) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 16, 0.8114) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 17, 0.7746) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 18, 0.7638) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 19, 0.7957) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 20, 0.7205) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [blue] plot [smooth] coordinates {(10,92.59) (20,97.27) (30,97.89) (40,98.32)
+ (50,98.41) (60,98.59) (70,98.74) (80,98.89) (90,99.01) (100,99.01) (110,99.03)
+ (120,99.16) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 1, 0.3862) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 2, 0.41962) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 3, 0.48804) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 4, 0.56332) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 5, 0.59544) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 6, 0.60502) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 7, 0.65218) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 8, 0.63712) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 9, 0.66866) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 10, 0.67222) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 11, 0.71808) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 12, 0.71818) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 13, 0.73474) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 14, 0.71924) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 15, 0.74322) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 16, 0.7544) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 17, 0.77154) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 18, 0.7746) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 19, 0.76962) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 20, 0.80214) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [green] plot [smooth] coordinates {(10,98.16) (20,98.72) (30,99.02) (40,98.85)
+ (50,99.04) (60,99.14) (70,99.01) (80,99.09) (90,99.16) (100,99.03) (110,99.18)
+ (120,99.27) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 1, 1.68570544876) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 2, 1.62552836205) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 3, 1.44767180737) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 4, 1.21895883797) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 5, 1.14133713516) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 6, 1.1249390556) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 7, 0.997532535057) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 8, 1.0291935516) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 9, 0.95282732811) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 10, 0.91748915163) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 11, 0.817414184284) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 12, 0.807083598061) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 13, 0.760880114365) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 14, 0.813676658173) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 15, 0.744939963741) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 16, 0.709642398834) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 17, 0.665392982769) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 18, 0.644153992615) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 19, 0.670834552803) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 20, 0.581953317957) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [black] plot [smooth] coordinates {(10,5.78) (20,3.88) (30,3.29) (40,3.45)
+ (50,3.01) (60,2.66) (70,2.96) (80,2.96) (90,2.57) (100,3.17) (110,2.50) (120,2.51)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, scale=0.01, pin=0.1:{
+\backslash
+color{black}$Train Loss$}] at (axis cs: 7, 0.1296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, scale=0.01, pin=0.1:{
+\backslash
+color{green}$Train Accuracy$}] at (axis cs: 7, 0.2296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red,   scale=0.01, pin=0.1:{
+\backslash
+color{red}$Test Accuracy$}]   at (axis cs: 7, 0.3296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue,  scale=0.01, pin=0.1:{
+\backslash
+color{blue}$Test Loss$}]  at (axis cs: 7, 0.4296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{axis}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Stochastic-Gradient-CNN"
+
+\end_inset
+
+Stochastic Gradient CNN Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Batch Normalization
+\end_layout
+
+\begin_layout Standard
+Model
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(32, 3, 3, border_mode='same', input_shape=(img_channels,
+ img_rows, img_cols))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(32, 3, 3)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(MaxPooling2D(pool_size=(2, 2))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.25))
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(64, 3, 3, border_mode='same')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(BatchNormalization()) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(64, 3, 3)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(BatchNormalization()) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu'))
+\end_layout
+
+\begin_layout Itemize
+model.add(MaxPooling2D(pool_size=(2, 2))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.25)) model.add(Flatten())
+\end_layout
+
+\begin_layout Itemize
+model.add(Dense(512)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.5))
+\end_layout
+
+\begin_layout Itemize
+model.add(Dense(nb_classes)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('softmax'))
+\end_layout
+
+\begin_layout Itemize
+sgd = SGD(lr=0.01, decay=0, momentum=0.0, nesterov=False) 
+\end_layout
+
+\begin_layout Itemize
+model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'
+]) 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cccccccc}
+S.No & Layers & Input\,Size\,to\,Layer & Activation\,Type & Dropout & PoolSize & Stride & No\,of\,Filters\\
+1 & Input & (3,32,32) & -\\
+2 & Conv2D & (3,32,32) & - &  &  & 1 & 32\\
+3 & Activation & (32,32,32) & RELU\\
+4 & Conv2D & (32,32,32) & - &  &  & 1 & 32\\
+5 & Activation & (32,30,30) & RELU\\
+6 & MaxPool2D & (32,30,30) & - &  & (2,2)\\
+7 & Dropout & (32,15,15) & - & 0.25\\
+8 & Conv2D & (32,15,15) & - &  &  & 1 & 64\\
+9 & Activation & (64,15,15) & RELU\\
+10 & Batch\,Normalization & (64,15,15) & -\\
+11 & Conv2D & (64,15,15) & - &  &  & 1 & 64\\
+12 & Activation & (64,13,13) & RELU\\
+13 & Batch\,Normalization & (64,13,13) & -\\
+14 & MaxPool2D & (64,13,13) & - &  & (2,2)\\
+15 & Dropout & (64,6,6) & - & 0.25\\
+16 & Flatten & (64,6,6) & -\\
+17 & Dense & 2304 & -\\
+18 & Activation & 512 & RELU\\
+19 & Dropout & 512 & - & 0.5\\
+20 & Dense & 512 & -\\
+21 & Activation & 10 & Softmax
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)Layer Details
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+batch_size = 32 
+\end_layout
+
+\begin_layout Itemize
+nb_classes = 10 
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 0.01
+\end_layout
+
+\begin_layout Itemize
+nb_epoch = 20 
+\end_layout
+
+\begin_layout Itemize
+img_rows, img_cols = 32, 32, img_channels = 3 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)Other Details
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:NA32"
+
+\end_inset
+
+Network Architecture
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Batch-Normalization-Results"
+
+\end_inset
+
+below shows the loss and accuracy in each epoch.
+ 20th epoch gets an Train accuracy of 82.608% and Test accuracy 76.08%.
+ Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans3_2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{axis} [dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.style={shorten >=-#1,shorten <=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.default=1cm,  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.style={shorten >=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.default=1cm, 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ymin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+ymax=2.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmax=20,
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel=Epoch,
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel=Loss/Accuracy
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 1, 0.4632) {};        
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 2,0.5571) {};  
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 3,0.5939) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 4,0.6234) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 5,0.6326) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 6,0.6409) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 7, 0.6604) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 8, 0.6766) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 9, 0.6524) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 10, 0.7078) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 11, 0.7175) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 12, 0.7253) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 13, 0.7320) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 14, 0.7269) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 15, 0.7340) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 16, 0.7416) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 17,0.7296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 18, 0.7410) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 19, 0.7645) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 20, 0.7608) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 1,  1.5089) {};          
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 2, 1.2545) {};    
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 3, 1.1517) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 4, 1.0789) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 5, 1.0551) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 6, 1.0125) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 7,  0.9609) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 8,  0.9285) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 9,  0.9892) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 10,  0.8323) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 11,  0.8197) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 12,  0.7833) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 13,  0.7690) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 14,  0.7881) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 15,  0.7660) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 16,  0.7424) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 17, 0.7706) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 18,  0.7501) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 19,  0.6764) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 20,  0.6888 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 1, 0.46918) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 2, 0.56006) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 3, 0.60334) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 4, 0.63552) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 5, 0.64696) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 6, 0.65560) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 7, 0.67904) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 8, 0.70184) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 9, 0.67734) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 10, 0.74262) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 11, 0.74528) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 12, 0.76528) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 13, 0.77126) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 14, 0.76834) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 15, 0.78174) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 16, 0.79302) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 17, 0.77920) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 18, 0.79362) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 19, 0.82678) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 20, 0.82608) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 1, 1.50943937325) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 2, 1.24383382515) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 3, 1.13246843472) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 4, 1.05083286518) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 5, 1.01894144913) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 6, 0.96984665691) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 7, 0.91137411899) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 8, 0.86700507249) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 9, 0.91799085470) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 10, 0.75431382219) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 11, 0.73175908094) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 12, 0.69246939935) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 13, 0.66613351614) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 14, 0.67720636228) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 15, 0.64648332815) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 16, 0.60954827148) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 17, 0.62688465744) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 18, 0.60582043793) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 19, 0.52003508667) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 20, 0.52325145571 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, scale=0.01, pin=0.1:{
+\backslash
+color{black}$Train Loss$}] at (axis cs: 7, 0.1296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, scale=0.01, pin=0.1:{
+\backslash
+color{green}$Train Accuracy$}] at (axis cs: 7, 0.2296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red,   scale=0.01, pin=0.1:{
+\backslash
+color{red}$Test Accuracy$}]   at (axis cs: 7, 0.3296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue,  scale=0.01, pin=0.1:{
+\backslash
+color{blue}$Test Loss$}]  at (axis cs: 7, 0.4296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{axis}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Batch-Normalization-Results"
+
+\end_inset
+
+Batch Normalization CNN Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Adding two batch normalization layers slowed down the run time for each
+ epoch by a factor of 5, The convergence happened in about same number of
+ epoch and accuracy improved by around 1.5%.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Replace the fully connected layer by average pooling layer
+\end_layout
+
+\begin_layout Standard
+Model
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(32, 3, 3, border_mode='same', input_shape=(img_channels,
+ img_rows, img_cols))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(BatchNormalization())
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(32, 3, 3)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(BatchNormalization())
+\end_layout
+
+\begin_layout Itemize
+model.add(MaxPooling2D(pool_size=(2, 2))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.25))
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(64, 3, 3, border_mode='same')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu')) model.add(BatchNormalization())
+\end_layout
+
+\begin_layout Itemize
+model.add(Convolution2D(64, 3, 3)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(BatchNormalization())
+\end_layout
+
+\begin_layout Itemize
+model.add(MaxPooling2D(pool_size=(2, 2))) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.25))
+\end_layout
+
+\begin_layout Itemize
+model.add(AveragePooling2D(pool_size=(2, 2), strides=None, border_mode='valid',
+ dim_ordering='th'))
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('relu')) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Dropout(0.5)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Flatten())
+\end_layout
+
+\begin_layout Itemize
+model.add(Dense(nb_classes)) 
+\end_layout
+
+\begin_layout Itemize
+model.add(Activation('softmax')) 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Formula 
+\[
+\begin{array}{cccccccc}
+S.No & Layers & Input\,Size\,to\,Layer & Activation\,Type & Dropout & PoolSize & Stride & No\,of\,Filters\\
+1 & Input & (3,32,32) & -\\
+2 & Conv2D & (3,32,32) & - &  &  & 1 & 32\\
+3 & Activation & (32,32,32) & RELU\\
+4 & Conv2D & (32,32,32) & - &  &  & 1 & 32\\
+5 & Activation & (32,30,30) & RELU\\
+6 & MaxPool2D & (32,30,30) & - &  & (2,2)\\
+7 & Dropout & (32,15,15) & - & 0.25\\
+8 & Conv2D & (32,15,15) & - &  &  & 1 & 64\\
+9 & Activation & (64,15,15) & RELU\\
+11 & Conv2D & (64,15,15) & - &  &  & 1 & 64\\
+12 & Activation & (64,13,13) & RELU\\
+14 & MaxPool2D & (64,13,13) & - &  & (2,2)\\
+15 & Dropout & (64,6,6) &  & 0.25\\
+16 & Average\,Pool & (64,6,6)\\
+17 & Activation & (64,3,3)\\
+18 & Dropout & (64,3,3) & - & 0.5\\
+19 & Flatten & (64,3,3) & -\\
+20 & Dense & 576 & -\\
+21 & Activation & 10 & RELU
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(a)Layer Details
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+batch_size = 32 
+\end_layout
+
+\begin_layout Itemize
+nb_classes = 10 
+\end_layout
+
+\begin_layout Itemize
+nb_epoch = 20 
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 0.01
+\end_layout
+
+\begin_layout Itemize
+img_rows, img_cols = 32, 32, img_channels = 3 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \hfill{}
+\end_inset
+
+(b)Other Details
+\begin_inset space \hfill{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:NA33"
+
+\end_inset
+
+Network Architecture
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Avg-Connected-Layer"
+
+\end_inset
+
+below shows the loss and accuracy in each epoch.
+ 20th epoch gets an Train accuracy of 70.798% and Test accuracy 69.74%.
+ Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans3_3"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{axis} [dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.style={shorten >=-#1,shorten <=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.default=1cm,  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.style={shorten >=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.default=1cm, 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ymin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+ymax=2.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmax=20,
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel=Epoch,
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel=Loss/Accuracy
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 1,0.3915 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 2,0.4160 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 3,0.5004 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 4,0.5097 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 5,0.5474 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 6,0.5650 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 7,0.5852 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 8,0.6010 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 9,0.6044 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 10,0.6186 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 11,0.6426 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 12,0.6311 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 13,0.6569 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 14,0.6636 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 15,0.6579 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 16,0.6754 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 17,0.6753 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 18,0.6743 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 19,0.7027 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 20,0.6974 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [red] plot [smooth] coordinates {(10,24.29) (20,09.10) (30,6.80) (40,5.71)
+ (50,5.13) (60,4.49) (70,3.96) (80,3.69) (90,3.31) (100,3.13) (110,3.06) (120,2.61)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 1,1.7449 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 2,1.6300 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 3,1.4230 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 4,1.3858 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 5,1.2897 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 6,1.2403 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 7,1.1861 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 8,1.1393 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 9,1.1299 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 10,1.0921 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 11,1.0298 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 12,1.0491 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 13,0.9846 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 14,0.9696 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 15,0.9747 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 16,0.9287 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 17,0.9296 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 18,0.9638 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 19,0.8834 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 20,0.8710 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [blue] plot [smooth] coordinates {(10,92.59) (20,97.27) (30,97.89) (40,98.32)
+ (50,98.41) (60,98.59) (70,98.74) (80,98.89) (90,99.01) (100,99.01) (110,99.03)
+ (120,99.16) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 1,0.38668 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 2,0.41268 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 3,0.49552 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 4,0.51004 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 5,0.54894 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 6,0.5706  ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 7,0.5893  ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 8,0.60598 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 9,0.61552 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 10,0.6272  ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 11,0.6553  ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 12,0.64064 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 13,0.66736 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 14,0.67256 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 15,0.66584 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 16,0.68936 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 17,0.68944 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 18,0.68292 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 19,0.71044 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 20,0.70798 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [green] plot [smooth] coordinates {(10,98.16) (20,98.72) (30,99.02) (40,98.85)
+ (50,99.04) (60,99.14) (70,99.01) (80,99.09) (90,99.16) (100,99.03) (110,99.18)
+ (120,99.27) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 1, 1.7524165118 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 2, 1.6379024084 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 3, 1.4255921286 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 4, 1.3892800993 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 5, 1.2844048543 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 6, 1.2334152095 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 7, 1.1774108814 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 8, 1.1266469517 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 9, 1.1156077107 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 10, 1.0744081342 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 11, 1.0103388591 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 12, 1.0263711285 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 13, 0.9638473684 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 14, 0.9457414566 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 15, 0.9520207832 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 16, 0.9053237090 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 17, 0.9017604615 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 18, 0.9359795059 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 19, 0.8556257418 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 20, 0.8400408264 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [black] plot [smooth] coordinates {(10,5.78) (20,3.88) (30,3.29) (40,3.45)
+ (50,3.01) (60,2.66) (70,2.96) (80,2.96) (90,2.57) (100,3.17) (110,2.50) (120,2.51)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, scale=0.01, pin=0.1:{
+\backslash
+color{black}$Train Loss$}] at (axis cs: 7, 0.1296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, scale=0.01, pin=0.1:{
+\backslash
+color{green}$Train Accuracy$}] at (axis cs: 7, 0.2296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red,   scale=0.01, pin=0.1:{
+\backslash
+color{red}$Test Accuracy$}]   at (axis cs: 7, 0.3296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue,  scale=0.01, pin=0.1:{
+\backslash
+color{blue}$Test Loss$}]  at (axis cs: 7, 0.4296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{axis}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Avg-Connected-Layer"
+
+\end_inset
+
+Average Pool Layer CNN Result
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Replacing the fully connected layer by an average pooling layer degraded
+ the performance by around 5%.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Adaptive Gradient 
+\end_layout
+
+\begin_layout Itemize
+adg = Adagrad(lr=0.01, epsilon=1e-06)
+\end_layout
+
+\begin_layout Itemize
+model.compile(loss='categorical_crossentropy', optimizer=adg, metrics=['accuracy'
+]) 
+\end_layout
+
+\begin_layout Standard
+Architecture for this is same as Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:NA31"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Apart from that the following parameters were used for adaptive gradient
+ 
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 0.01
+\end_layout
+
+\begin_layout Itemize
+epsilon=1e-06
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Adaptive-Gradient-Results"
+
+\end_inset
+
+below shows the loss and accuracy in each epoch.
+ 20th epoch gets an Train accuracy of 88.952% and Test accuracy 78.32%.
+ Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans3_4"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{axis} [dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.style={shorten >=-#1,shorten <=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.default=1cm,  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.style={shorten >=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.default=1cm, 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ymin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+ymax=2.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmax=20,
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel=Epoch,
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel=Loss/Accuracy
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 1,0.5589 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 2,0.6315 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 3,0.6709 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 4,0.7005 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 5,0.7160 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 6,0.7263 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 7,0.7193 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 8,0.7414 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 9,0.7539 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 10,0.7443 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 11,0.7589 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 12,0.7637 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 13,0.7677 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 14,0.7720 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 15,0.7773 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 16,0.7767 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 17,0.7788 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 18,0.7847 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 19,0.7811 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 20,0.7832 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [red] plot [smooth] coordinates {(10,24.29) (20,09.10) (30,6.80) (40,5.71)
+ (50,5.13) (60,4.49) (70,3.96) (80,3.69) (90,3.31) (100,3.13) (110,3.06) (120,2.61)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 1,1.2366 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 2,1.0371 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 3,0.9381 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 4,0.8648 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 5,0.8241 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 6,0.7924 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 7,0.8261 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 8,0.7380 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 9,0.7118 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 10,0.7441 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 11,0.6919 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 12,0.6781 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 13,0.6630 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 14,0.6637 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 15,0.6474 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 16,0.6472 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 17,0.6446 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 18,0.6247 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 19,0.6290 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 20,0.6242 ) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [blue] plot [smooth] coordinates {(10,92.59) (20,97.27) (30,97.89) (40,98.32)
+ (50,98.41) (60,98.59) (70,98.74) (80,98.89) (90,99.01) (100,99.01) (110,99.03)
+ (120,99.16) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 1,0.56870 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 2,0.65286 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 3,0.69660 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 4,0.73032 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 5,0.75210 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 6,0.76442 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 7,0.76360 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 8,0.79556 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 9,0.81064 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 10,0.80216 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 11,0.82798 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 12,0.83814 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 13,0.84798 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 14,0.85050 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 15,0.86124 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 16,0.86580 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 17,0.87012 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 18,0.88314 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 19,0.8840 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 20,0.88952 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [green] plot [smooth] coordinates {(10,98.16) (20,98.72) (30,99.02) (40,98.85)
+ (50,99.04) (60,99.14) (70,99.01) (80,99.09) (90,99.16) (100,99.03) (110,99.18)
+ (120,99.27) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 1,1.20680726513 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 2,0.98265386097 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 3,0.86733048370 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 4,0.77578309024 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 5,0.71811885116 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 6,0.67434459127 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 7,0.69297622589 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 8,0.59327852620 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 9,0.55704819368 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 10,0.57686924752 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 11,0.51291454663 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 12,0.48522013920 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 13,0.46501388197 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 14,0.44763563571 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 15,0.42351980488 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 16,0.41499322102 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 17,0.39999598031 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 18,0.37692174181 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 19,0.36551903080 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 20,0.35515083510 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [black] plot [smooth] coordinates {(10,5.78) (20,3.88) (30,3.29) (40,3.45)
+ (50,3.01) (60,2.66) (70,2.96) (80,2.96) (90,2.57) (100,3.17) (110,2.50) (120,2.51)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, scale=0.01, pin=0.1:{
+\backslash
+color{black}$Train Loss$}] at (axis cs: 7, 0.1296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, scale=0.01, pin=0.1:{
+\backslash
+color{green}$Train Accuracy$}] at (axis cs: 7, 0.2296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red,   scale=0.01, pin=0.1:{
+\backslash
+color{red}$Test Accuracy$}]   at (axis cs: 7, 0.3296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue,  scale=0.01, pin=0.1:{
+\backslash
+color{blue}$Test Loss$}]  at (axis cs: 7, 0.4296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{axis}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Adaptive-Gradient-Results"
+
+\end_inset
+
+Adaptive Gradient CNN Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This was the best optimization in terms of performance and speed.
+ Convergence was faster and the run time of each epoch remained un-changed
+ as compared to section 3.1
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Nesterovs Accelerated Gradient
+\end_layout
+
+\begin_layout Itemize
+sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True) 
+\end_layout
+
+\begin_layout Itemize
+model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'
+]) 
+\end_layout
+
+\begin_layout Standard
+Architecture for this is same as Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:NA31"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Apart from that the following parameters were used for Nesterovs Accelerated
+ Gradient 
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 0.01
+\end_layout
+
+\begin_layout Itemize
+Epsilon=1e-06
+\end_layout
+
+\begin_layout Itemize
+Decay=1e-6
+\end_layout
+
+\begin_layout Itemize
+Momentum=0.9
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Nesterovs-Gradient-Results"
+
+\end_inset
+
+below shows the loss and accuracy in each epoch.
+ 20th epoch gets an Train accuracy of 87.698% and Test accuracy 77.06%.
+ Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans3_5"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{axis} [dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.style={shorten >=-#1,shorten <=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.default=1cm,  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.style={shorten >=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.default=1cm, 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ymin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+ymax=2.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmax=20,
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel=Epoch,
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel=Loss/Accuracy
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 1, 0.5268) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 2, 0.5916) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 3, 0.6747) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 4, 0.6846) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 5, 0.7030) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 6, 0.7308) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 7, 0.7282) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 8, 0.7502) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 9, 0.7341) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 10, 0.7437) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 11, 0.7493) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 12, 0.7463) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 13, 0.7674) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 14, 0.7645) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 15, 0.7694) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 16, 0.7539) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 17, 0.7465) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 18, 0.7726) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 19, 0.7675) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 20, 0.7706) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [red] plot [smooth] coordinates {(10,24.29) (20,09.10) (30,6.80) (40,5.71)
+ (50,5.13) (60,4.49) (70,3.96) (80,3.69) (90,3.31) (100,3.13) (110,3.06) (120,2.61)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 1, 1.3382) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 2, 1.1569) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 3, 0.9232) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 4, 0.9062) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 5, 0.8451) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 6, 0.7720) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 7, 0.7930) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 8, 0.7367) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 9, 0.7677) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 10, 0.7633) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 11, 0.7285) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 12, 0.7364) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 13, 0.6916) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 14, 0.6944) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 15, 0.6851) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 16, 0.7097) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 17, 0.7286) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 18, 0.6761) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 19, 0.6805) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 20, 0.6905 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [blue] plot [smooth] coordinates {(10,92.59) (20,97.27) (30,97.89) (40,98.32)
+ (50,98.41) (60,98.59) (70,98.74) (80,98.89) (90,99.01) (100,99.01) (110,99.03)
+ (120,99.16) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 1,0.53036) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 2,0.61064) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 3,0.70084) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 4,0.71274) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 5,0.74144) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 6,0.77464) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 7,0.77442) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 8,0.80220) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 9,0.79840) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 10,0.80894) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 11,0.81776) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 12,0.82534) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 13,0.85758) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 14,0.86150) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 15,0.85760) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 16,0.84684) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 17,0.84168) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 18,0.87046) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 19,0.87672) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 20,0.87698 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [green] plot [smooth] coordinates {(10,98.16) (20,98.72) (30,99.02) (40,98.85)
+ (50,99.04) (60,99.14) (70,99.01) (80,99.09) (90,99.16) (100,99.03) (110,99.18)
+ (120,99.27) }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 1,1.32943365406 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 2,1.10781200901 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 3,0.850922093544 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 4,0.818713060608 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 5,0.740998828049 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 6,0.650718227787 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 7,0.638259269056 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 8,0.580437222929 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 9,0.578677370958 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 10,0.570338945007 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 11,0.536913178501) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 12,0.515491702175) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 13,0.43414510067) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 14,0.426302056255) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 15,0.433648353033) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 16,0.469992389116) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 17,0.461327666788) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 18,0.411149786134) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 19,0.391656572456) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 20,0.36876311512 ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+draw [black] plot [smooth] coordinates {(10,5.78) (20,3.88) (30,3.29) (40,3.45)
+ (50,3.01) (60,2.66) (70,2.96) (80,2.96) (90,2.57) (100,3.17) (110,2.50) (120,2.51)
+ }; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, scale=0.01, pin=0.1:{
+\backslash
+color{black}$Train Loss$}] at (axis cs: 7, 0.1296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, scale=0.01, pin=0.1:{
+\backslash
+color{green}$Train Accuracy$}] at (axis cs: 7, 0.2296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red,   scale=0.01, pin=0.1:{
+\backslash
+color{red}$Test Accuracy$}]   at (axis cs: 7, 0.3296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue,  scale=0.01, pin=0.1:{
+\backslash
+color{blue}$Test Loss$}]  at (axis cs: 7, 0.4296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{axis}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Nesterovs-Gradient-Results"
+
+\end_inset
+
+Nesterovs accelerated Gradient CNN Results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nesterovs Accelerated Gradient optimization was similar in terms of performance
+ and speed to adaptive gradient.
+ Convergence was faster and the run time of each epoch remained un-changed
+ as compared to section 3.1
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+RMSprop
+\end_layout
+
+\begin_layout Itemize
+rms = RMSprop(lr=0.001, rho=0.9, epsilon=1e-06)
+\end_layout
+
+\begin_layout Itemize
+model.compile(loss='categorical_crossentropy', optimizer=rms, metrics=['accuracy'
+]) 
+\end_layout
+
+\begin_layout Standard
+Architecture for this is same as Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:NA31"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Apart from that the following parameters were used for Nesterovs Accelerated
+ Gradient 
+\end_layout
+
+\begin_layout Itemize
+Learning Rate = 0.01
+\end_layout
+
+\begin_layout Itemize
+rho=0.9
+\end_layout
+
+\begin_layout Itemize
+epsilon=1e-06
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:RMSProp-CNN-results"
+
+\end_inset
+
+below shows the loss and accuracy in each epoch.
+ 20th epoch gets an Train accuracy of 82.344% and Test accuracy 75.06%.
+ Code for this section can be found in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "ans3_6"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{axis} [dot/.style={circle,inner sep=1pt,fill,label={#1},name=#1}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.style={shorten >=-#1,shorten <=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+extended line/.default=1cm,  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.style={shorten >=-#1},  
+\end_layout
+
+\begin_layout Plain Layout
+
+one end extended/.default=1cm, 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ymin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+ymax=2.1,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmin=0,
+\end_layout
+
+\begin_layout Plain Layout
+
+xmax=20,
+\end_layout
+
+\begin_layout Plain Layout
+
+xlabel=Epoch,
+\end_layout
+
+\begin_layout Plain Layout
+
+ylabel=Loss/Accuracy
+\end_layout
+
+\begin_layout Plain Layout
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 1,0.5736) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 2,0.6792) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 3,0.6997) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 4,0.6937) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 5,0.7372) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 6,0.7202) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 7,0.7444) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 8,0.7518) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 9,0.7130) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 10,0.7565) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 11,0.7274) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 12,0.7534) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 13,0.7362) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 14,0.7403) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 15,0.7507) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 16,0.7201) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 17,0.7092) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 18,0.7373) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 19,0.7477) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red, circle, scale=0.3] at (axis cs: 20,0.7506) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 1,1.2239) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 2,0.9132) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 3,0.8574) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 4,0.8866) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 5,0.7732) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 6,0.8033) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 7,0.7686) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 8,0.7349) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 9,0.9488) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 10,0.7277) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 11,0.8461) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 12,0.7958) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 13,0.8171) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 14,0.8424) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 15,0.7707) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 16,0.8522) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 17,0.9237) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 18,0.8726) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 19,0.9834) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue, star, scale=0.3] at (axis cs: 20,0.8056) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 1,0.58184) {};       
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 2,0.70232) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 3,0.73192) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 4,0.73212) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 5,0.78390) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 6,0.77448) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 7,0.79578) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 8,0.81506) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 9,0.75650) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 10,0.82150) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 11,0.78480) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 12,0.81470) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 13,0.80904) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 14,0.80236) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 15,0.82426) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 16,0.78722) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 17,0.76354) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 18,0.80796) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 19,0.81188) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, star, scale=0.2] at (axis cs: 20,0.82344) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 1,1.187128117  ) {};     
+       
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 2,0.852412236  ) {};     
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 3,0.767722049  ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 4,0.757368580  ) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 5,0.627231361) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 6,0.647567282) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 7,0.592450837) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 8,0.539130867) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 9,0.748592894) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 10,0.522977310) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 11,0.696532228) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 12,0.551689211) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 13,0.634189451) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 14,0.601477127) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 15,0.545758967) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 16,0.667650710) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 17,0.770633293) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 18,0.600530590) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 19,0.649482681) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, star, scale=0.3] at (axis cs: 20,0.565045031) {}; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=black, scale=0.01, pin=0.1:{
+\backslash
+color{black}$Train Loss$}] at (axis cs: 7, 0.1296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=green, scale=0.01, pin=0.1:{
+\backslash
+color{green}$Train Accuracy$}] at (axis cs: 7, 0.2296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=red,   scale=0.01, pin=0.1:{
+\backslash
+color{red}$Test Accuracy$}]   at (axis cs: 7, 0.3296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node [fill=blue,  scale=0.01, pin=0.1:{
+\backslash
+color{blue}$Test Loss$}]  at (axis cs: 7, 0.4296) {};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{axis}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:RMSProp-CNN-results"
+
+\end_inset
+
+RMSProp CNN results
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+RMSprop optimization was slightly better than stochastic gradient.
+ Convergence was faster but the accuracy improved by a small factor.
+ Run time for each epoch was similar to when not using this optimization.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Enumerate
+https://github.com/fchollet/keras
+\end_layout
+
+\begin_layout Section
+Appendix A:: Code 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans1a.m"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer1},label={ans1a}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../perceptron.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Perceptron},label={ans2bc}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans2_1_3.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer2(part 1 and 3)},label={ans2_1_3}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans2_2.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer2 (part 2)},label={ans2_2}"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans3_1.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer3(a)},label={ans3_1}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans3_2.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer3(b)},label={ans3_2}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans3_3.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer3(c)},label={ans3_3}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans3_4.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer3(d)},label={ans3_4}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans3_5.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer3(e)},label={ans3_5}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "../ans3_6.py"
+lstparams "breaklines=true,captionpos=b,frame=tb,showspaces=false,caption={Answer3(f)},label={ans3_6}"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

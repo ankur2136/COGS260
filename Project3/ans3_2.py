@@ -20,6 +20,7 @@ from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD
 from keras.utils import np_utils
 from keras.callbacks import Callback
+from keras.layers.normalization import BatchNormalization
 
 batch_size = 32
 nb_classes = 10
@@ -60,10 +61,12 @@ model = Sequential()
 model.add(Convolution2D(32, 3, 3, border_mode='same',
                         input_shape=(img_channels, img_rows, img_cols)))
 model.add(Activation('relu'))
+model.add(BatchNormalization())
 
 #Conv layer 1
 model.add(Convolution2D(32, 3, 3))
 model.add(Activation('relu'))
+model.add(BatchNormalization())
 
 #Pool Layer 1
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -72,10 +75,12 @@ model.add(Dropout(0.25))
 #Conv Layer 2
 model.add(Convolution2D(64, 3, 3, border_mode='same'))
 model.add(Activation('relu'))
+model.add(BatchNormalization())
 
 #Conv Layer 3
 model.add(Convolution2D(64, 3, 3))
 model.add(Activation('relu'))
+model.add(BatchNormalization())
 
 #Pool Layer 2
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -91,7 +96,8 @@ model.add(Dropout(0.5))
 model.add(Dense(nb_classes))
 model.add(Activation('softmax'))
 
-sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)                                
+# let's train the model using SGD + momentum (how original).
+sgd = SGD(lr=0.01, decay=0, momentum=0.0, nesterov=False)
 model.compile(loss='categorical_crossentropy',
               optimizer=sgd,
               metrics=['accuracy'])
